@@ -34,12 +34,10 @@
 #if defined(__GNUC__) && __GNUC__ < 8
 #include <experimental/filesystem>
 namespace std {
-namespace filesystem = std::experimental::filesystem;
 }
 #elif defined(_MSC_VER) && _MSVC_LANG < 201703L
 #include <filesystem>
 namespace std {
-namespace filesystem = std::experimental::filesystem;
 }  // namespace std
 #else
 #include <filesystem>
@@ -354,7 +352,6 @@ class ArgumentParser {
       if (err) {
         return err;
       }
-      _bin = std::filesystem::path(argv[0]).filename().string();
 
       // parse
       std::string current_arg;
@@ -512,7 +509,7 @@ class ArgumentParser {
     if (_current >= 0) {
       Result err;
       size_t c = static_cast<size_t>(_current);
-      Argument &a = _arguments[static_cast<size_t>(_current)];
+      Argument &a = _arguments[c];
       if (a._count >= 0 && static_cast<int>(a._values.size()) >= a._count) {
         err = _end_argument();
         if (err) {
